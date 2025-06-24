@@ -21,6 +21,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'role_code',
         'password',
     ];
 
@@ -49,6 +50,11 @@ class User extends Authenticatable
 
     public function role(): BelongsTo
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'role_code', 'code');
+    }
+
+    public function isModerator(): bool
+    {
+        return $this->role()->getResults()->code === Role::MODERATOR;
     }
 }
