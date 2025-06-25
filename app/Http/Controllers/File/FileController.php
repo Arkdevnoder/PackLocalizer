@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\File;
 
-use App\Http\Controllers\Controller;
 use App\Models\File;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\RedirectResponse;
 
 class FileController extends Controller
 {
@@ -27,11 +28,11 @@ class FileController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        if($request->hasFile('fileSelector')){
-            $path = $request->file('fileSelector')->store('localizations', 'public');
-            return redirect("dashboard")->with("success", __("File uploaded"));
+        if($request->hasFile('fileSelector'))
+        {
+            $this->saveFileAndRedirectToDashboard($request);
         }
     }
 
@@ -65,5 +66,11 @@ class FileController extends Controller
     public function destroy(File $file)
     {
         //
+    }
+
+    private function saveFileAndRedirectToDashboard(Request $request): RedirectResponse
+    {
+        $path = $request->file('fileSelector')->store('localizations', 'public');
+        return redirect("dashboard")->with("success", __("File uploaded"));
     }
 }
