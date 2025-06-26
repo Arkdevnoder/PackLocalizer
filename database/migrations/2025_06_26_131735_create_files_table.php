@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('files', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id')->nullable();
+            $table->string('name');
             $table->string('path')->unique();
             $table->foreign("user_id")->references("id")->on("users")->onDelete("set null");
             $table->timestamps();

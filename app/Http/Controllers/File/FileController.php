@@ -32,8 +32,9 @@ class FileController extends Controller
     {
         if($request->hasFile('fileSelector'))
         {
-            $this->saveFileAndRedirectToDashboard($request);
+            return $this->saveFileAndRedirectToDashboard($request);
         }
+        return redirect("dashboard")->with("error", __("File not found"));
     }
 
     /**
@@ -70,7 +71,9 @@ class FileController extends Controller
 
     private function saveFileAndRedirectToDashboard(Request $request): RedirectResponse
     {
-        $path = $request->file('fileSelector')->store('localizations', 'public');
+        $file = $request->file('fileSelector');
+        $path = $file->store('localizations', 'public');
+        File::create(["user_id" => $request->user()->id, "path" => $path, "name" => $file->getClientOriginalName()]);
         return redirect("dashboard")->with("success", __("File uploaded"));
     }
 }
