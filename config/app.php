@@ -125,5 +125,6 @@ return [
 
     'project_url' => env('PROJECT_URL', ''),
     'moderator_url' => env('MODERATOR_URL', ''),
+    'repository_url' => env('REPOSITORY_URL', ''),
 
 ];
